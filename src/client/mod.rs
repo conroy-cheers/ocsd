@@ -1,3 +1,5 @@
+//! Client interface for interacting with the OCSD buffer via /dev/mem on Linux.
+
 mod error;
 
 use devmem::Mapping;
@@ -7,12 +9,15 @@ use crate::protocol::{MemoryMapped, OcsdDevice, OcsdHeader};
 
 const OCSD_HEADER_SIZE: usize = 0x40;
 
+/// Context representing the complete OCSD buffer, including header and all devices
 pub struct OcsdContext {
-    init_header: OcsdHeader,
     header_mapping: Mapping,
+    /// Vec of device contexts, each corresponding to a slice of the OCSD buffer.
+    /// All are open and available following construction of the [OcsdContext].
     pub device_mappings: Vec<OcsdDeviceContext>,
 }
 
+/// Context representing a single OCSD device
 pub struct OcsdDeviceContext {
     mapping: Mapping,
     device_size: u8,
@@ -40,6 +45,9 @@ impl OcsdHeader {
 }
 
 impl OcsdContext {
+    /// Create a new [OcsdContext] given a provided base address.
+    /// The header will be read and parsed to determine the number of available
+    /// option card slots.
     pub fn new(base_address: usize) -> Result<Self, MappingError> {
         let header_mapping_result = unsafe { Mapping::new(base_address, OCSD_HEADER_SIZE) };
         match header_mapping_result {
@@ -58,7 +66,6 @@ impl OcsdContext {
                 }
 
                 Ok(Self {
-                    init_header,
                     header_mapping,
                     device_mappings,
                 })
@@ -76,22 +83,26 @@ impl OcsdContext {
         OcsdHeader::from_bytes(&header_data)
     }
 
+    /// Re-read and parse the header from the OCSD buffer.
     pub fn read_header(&mut self) -> OcsdHeader {
         Self::_read_header(&mut self.header_mapping)
     }
 
+    /// Replace the header in the OCSD buffer with the one provided.
     pub fn write_header(&mut self, device: &OcsdHeader) {
         self.header_mapping.copy_from_slice(&device.to_bytes());
     }
 }
 
 impl OcsdDeviceContext {
+    /// Read and parse this device from the OCSD buffer.
     pub fn read(&mut self) -> OcsdDevice {
         let mut device_data: Vec<u8> = vec![0x00; self.device_size as usize];
         self.mapping.copy_into_slice(&mut device_data);
         OcsdDevice::from_bytes(&device_data)
     }
 
+    /// Replace the device data in the OCSD buffer with that provided.
     pub fn write(&mut self, device: &OcsdDevice) {
         self.mapping.copy_from_slice(&device.to_bytes());
     }

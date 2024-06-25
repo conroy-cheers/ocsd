@@ -11,8 +11,18 @@ readme = "README.md"
 ## Enable `client` module for easy access to the OCSD buffer via `/dev/mem`
 devmem = ["dep:devmem"]
 
+[[example]]
+name = "report_device"
+doc-scrape-examples = true
+required-features = ["devmem"]
+
 [dependencies]
 bitmask-enum = "2.2.4"
 bytemuck = { version = "1.16.1", features = ["derive"] }
 devmem = { version = "0.1.1", optional = true }
 document-features = "0.2.8"
+
+[dev-dependencies]
+ctrlc = "3.4.4"
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.118"

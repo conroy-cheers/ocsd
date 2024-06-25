@@ -1,6 +1,6 @@
 [package]
 name = "ocsd"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "OCSD temperature reporting interface library"
@@ -18,6 +18,9 @@ devmem = ["dep:devmem"]
 name = "report_device"
 doc-scrape-examples = true
 required-features = ["devmem"]
+
+[package.metadata.docs.rs]
+all-features = true
 
 [dependencies]
 bitmask-enum = "2.2.4"

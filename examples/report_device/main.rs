@@ -5,7 +5,7 @@
 //! Undefined behaviour may occur if this is run on other hardware.
 
 use {
-    ocsd::client::OcsdContext,
+    ocsd::client::{base_address, OcsdContext},
     ocsd::{
         Celsius, MemoryMapped, OcsdDevice, OcsdDeviceHeader, OcsdSensor, OcsdSensorLocation,
         OcsdSensorStatus, OcsdSensorType,
@@ -74,7 +74,7 @@ struct AppState {
 }
 
 fn main() {
-    match OcsdContext::new(0x791f6000) {
+    match OcsdContext::new(base_address::ML350_GEN9) {
         Ok(mut context) => {
             let mut header = context.read_header();
             println!("Header data before write:");

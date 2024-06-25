@@ -1,5 +1,6 @@
 //! Client interface for interacting with the OCSD buffer via /dev/mem on Linux.
 
+pub mod base_address;
 mod error;
 
 use devmem::Mapping;

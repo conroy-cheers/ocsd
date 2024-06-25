@@ -31,8 +31,8 @@ impl Celsius {
     /// # Examples
     /// ```
     /// # use std::error::Error;
-    /// # use ocsd::protocol::temperature::TempOutOfRange;
-    /// use ocsd::protocol::temperature::Celsius;
+    /// # use ocsd::protocol::error::TempOutOfRange;
+    /// use ocsd::protocol::Celsius;
     ///
     /// # fn main() -> Result<(), TempOutOfRange> {
     /// let temperature = Celsius::new(30)?;
@@ -57,8 +57,8 @@ impl Celsius {
     /// # Examples
     /// ```
     /// # use std::error::Error;
-    /// # use ocsd::protocol::temperature::TempOutOfRange;
-    /// use ocsd::protocol::temperature::Celsius;
+    /// # use ocsd::protocol::error::TempOutOfRange;
+    /// use ocsd::protocol::Celsius;
     ///
     /// # fn main() -> Result<(), TempOutOfRange> {
     /// let temperature = Celsius::new(30)?;
@@ -75,8 +75,8 @@ impl Celsius {
     /// # Examples
     /// ```
     /// # use std::error::Error;
-    /// # use ocsd::protocol::temperature::TempOutOfRange;
-    /// use ocsd::protocol::temperature::Celsius;
+    /// # use ocsd::protocol::error::TempOutOfRange;
+    /// use ocsd::protocol::Celsius;
     ///
     /// # fn main() -> Result<(), TempOutOfRange> {
     /// let temperature = Celsius::from_raw(50);

@@ -21,15 +21,18 @@ daughterboards, PCIe expansion cards) to iLO/BIOS for fan control and monitoring
 Ordinarily, supported option cards will directly report temperatures via OCSD
 without any involvement from the host OS, and the server will respond by controlling
 the fans accordingly.
+
 In the case of unsupported option cards, the server may do one of the following:
 - Assume that the card is running *very hot* and spin up the fans to deafening levels
   at all times
 - Ignore the card's existence entirely. In the case of passively cooled cards (e.g.
   unsupported server GPUs), this leads to thermal throttling due to insufficient fan
   speed at high load.
+
 Ideally, when installing an unsupported option card, we would just modify its firmware
 to report temperatures directly to the OCSD buffer. Unfortunately, this would be
 really difficult.
+
 As an alternative, this crate allows the host OS to take the reported temperatures
 available from existing drivers, and forward them to the OCSD buffer so they can
 be used by the iLO controller for reporting and fan control.

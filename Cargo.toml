@@ -8,6 +8,7 @@ repository = "https://github.com/conroy-cheers/ocsd"
 readme = "README.md"
 keywords = ["ocsd", "ilo", "sea-of-sensors"]
 categories = ["hardware-support"]
+exclude = [".github/*"]
 
 [features]
 ## Enable `client` module for easy access to the OCSD buffer via `/dev/mem`

@@ -18,16 +18,23 @@ use super::{
 #[bitmask_enum::bitmask(u16)]
 #[derive(Default)]
 pub enum OcsdSensorStatus {
+    /// 0b0001: sensor not failed
     NotFailed,
+    /// 0b0010: sensor is present
     Present,
+    /// 0b0100: sensor is disabled
     Disabled,
+    /// 0b1000: checksum is enabled
     WithChecksum,
 }
 
+/// Type of OCSD sensor
 #[derive(Default, Clone, Copy)]
 pub enum OcsdSensorType {
     #[default]
+    /// Reserved for decoding null sensors or sensors with an unimplemented type
     Unknown = 0,
+    /// Only thermal sensors are supported currently
     Thermal = 1,
 }
 
@@ -40,12 +47,16 @@ impl From<u8> for OcsdSensorType {
     }
 }
 
+/// Location of OCSD sensor on the option card
 #[allow(dead_code)]
 #[derive(Default, Clone, Copy)]
 pub enum OcsdSensorLocation {
     #[default]
+    /// Reserved for decoding null sensors or sensors with an unimplemented type
     Unknown = 0,
+    /// Internal to card ASIC (e.g. on-die GPU temperature sensor)
     InternalToAsic = 1,
+    /// Somewhere else on the option card
     OnboardOther = 5,
 }
 
@@ -59,9 +70,12 @@ impl From<u32> for OcsdSensorLocation {
     }
 }
 
+/// OCSD protocol version
 #[derive(Clone, Copy)]
 pub enum OcsdVersion {
+    /// Reserved for decoding invalid data or header with an unimplemented version
     Unknown = 0,
+    /// OCSD version 2
     Version2 = 2,
 }
 
@@ -74,9 +88,12 @@ impl From<u8> for OcsdVersion {
     }
 }
 
+/// OCSD device version
 #[derive(Clone, Copy)]
 pub enum DeviceVersion {
+    /// Reserved for decoding null sensors or sensors with an unimplemented type
     Unknown = 0,
+    /// Device version 1
     Version1 = 1,
 }
 
@@ -89,6 +106,7 @@ impl From<u8> for DeviceVersion {
     }
 }
 
+/// Used for structs which have a 1:1 representation in OCSD shared memory.
 pub trait MemoryMapped {
     /// Returns byte representation of the structure
     /// as it should appeaer in OCSD memory.
@@ -156,7 +174,9 @@ impl MemoryMapped for OcsdHeader {
 /// This implementation assumes fixed-size devices with
 /// 3 sensor slots.
 pub struct OcsdDevice {
+    /// Associates the OCSD device with a PCI device; also provides some extra information
     pub header: OcsdDeviceHeader,
+    /// Each device can have up to 3 sensors. Unused sensors should be set to Default::default.
     pub sensors: [OcsdSensor; 3],
 }
 

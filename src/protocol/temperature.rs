@@ -13,13 +13,13 @@ impl Display for TempOutOfRange {
 
 impl Error for TempOutOfRange {}
 
+/// Represents a signed integer temperature in degrees Celsius,
+/// stored as a single-byte raw value.
 #[derive(Default)]
 pub struct Celsius {
     value: i8,
 }
 
-/// Represents a signed integer temperature in degrees Celsius,
-/// stored as a single-byte raw value.
 impl Celsius {
     const OFFSET: i8 = 0;
 

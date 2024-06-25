@@ -1,5 +1,7 @@
 mod data;
+pub mod error;
 mod ocsd;
-pub mod temperature;
+mod temperature;
 
 pub use ocsd::*;
+pub use temperature::Celsius;
